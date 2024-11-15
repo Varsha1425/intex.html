@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Health API Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        h2 {
+            color: #333;
+        }
+        section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            max-width: 600px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="number"],
+        button {
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .submit-btn {
+            align-self: flex-start;
+        }
+        .info {
+            color: #555;
+            font-size: 14px;
+            margin-top: -10px;
+        }
+    </style>
+    <script>
+        async function submitData(endpoint, data) {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            alert('Response: ' + JSON.stringify(result));
+        }
+
+        async function getData(endpoint) {
+            const response = await fetch(endpoint);
+            const result = await response.json();
+            alert('Response: ' + JSON.stringify(result));
+        }
+
+        function submitCognitiveTest() {
+            const data = {
+                userId: document.getElementById('userId1').value,
+                testType: document.getElementById('testType').value,
+                testScore: document.getElementById('testScore').value,
+                timeTaken: document.getElementById('timeTaken').value
+            };
+            submitData('/brain-health/cognitive-test', data);
+        }
+
+        function submitDeclineRisk() {
+            const data = {
+                userId: document.getElementById('userId2').value,
+                lifestyleFactors: document.getElementById('lifestyleFactors').value,
+                medicalHistory: document.getElementById('medicalHistory').value,
+                age: document.getElementById('age').value,
+                familyHistory: document.getElementById('familyHistory').value
+            };
+            submitData('/brain-health/decline-risk', data);
+        }
+
+        function getBrainHealthScore() {
+            const userId = document.getElementById('userId3').value;
+            getData(`/brain-health/score?userId=${userId}`);
+        }
+
+        // More functions for other endpoints can be added here...
+    </script>
+</head>
+<body>
+    <h1>Brain Health API Interface</h1>
+
+    <section>
+        <h2>1. Cognitive Function Test Submission</h2>
+        <form onsubmit="event.preventDefault(); submitCognitiveTest();">
+            <label for="userId1">User ID:</label>
+            <input type="text" id="userId1" required>
+
+            <label for="testType">Test Type (e.g., memory, attention):</label>
+            <input type="text" id="testType" required>
+
+            <label for="testScore">Test Score:</label>
+            <input type="number" id="testScore" required>
+
+            <label for="timeTaken">Time Taken (in minutes):</label>
+            <input type="number" id="timeTaken" required>
+
+            <button type="submit" class="submit-btn">Submit Cognitive Test</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>2. Cognitive Decline Risk Assessment</h2>
+        <form onsubmit="event.preventDefault(); submitDeclineRisk();">
+            <label for="userId2">User ID:</label>
+            <input type="text" id="userId2" required>
+
+            <label for="lifestyleFactors">Lifestyle Factors (diet, exercise):</label>
+            <input type="text" id="lifestyleFactors" required>
+
+            <label for="medicalHistory">Medical History:</label>
+            <input type="text" id="medicalHistory" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" required>
+
+            <label for="familyHistory">Family History:</label>
+            <input type="text" id="familyHistory" required>
+
+            <button type="submit" class="submit-btn">Submit Decline Risk</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>3. Brain Health Score Calculation</h2>
+        <form onsubmit="event.preventDefault(); getBrainHealthScore();">
+            <label for="userId3">User ID:</label>
+            <input type="text" id="userId3" required>
+
+            <button type="submit" class="submit-btn">Get Brain Health Score</button>
+        </form>
+    </section>
+
+    <!-- Add more sections for other functionalities -->
+
+</body>
+</html>
